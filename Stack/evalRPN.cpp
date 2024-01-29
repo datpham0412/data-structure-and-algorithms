@@ -6,7 +6,7 @@ class Solution {
 public:
     int evalRPN(std::vector<std::string>& tokens) {
         std::vector<int> stack;  // Even though you asked for a vector<string>, we need a vector<int> for arithmetic operations
-        for (const std::string& token : tokens) {
+        for (std::string token : tokens) {
             if (token == "+" || token == "-" || token == "*" || token == "/") {
                 int right = stack.back();
                 stack.pop_back();

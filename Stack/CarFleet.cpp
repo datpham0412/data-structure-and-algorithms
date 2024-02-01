@@ -12,7 +12,7 @@ public:
         sort(pair.begin(), pair.end(), std::greater<>());
 
         std::vector<double> stack;
-        for (const auto& p : pair) {
+        for (auto p : pair) {
             if (stack.empty() || p.second > stack.back()) {
                 stack.push_back(p.second);
             }

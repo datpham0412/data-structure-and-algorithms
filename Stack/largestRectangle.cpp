@@ -28,7 +28,7 @@ class Solution{
 
 int main(){
     Solution solution;
-    vector<int> heights = {2,1,2};
+    vector<int> heights = {2,1,5,6,2,3};
     int result = solution.largestRectangle(heights);
     cout << result;
     return 0;

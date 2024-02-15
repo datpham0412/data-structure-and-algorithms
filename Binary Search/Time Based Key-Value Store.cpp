@@ -17,7 +17,7 @@ public:
     string get(string key, int timestamp) {
         // if (m.find(key) == m.end()) {
         if (!m.count(key)) {
-            return "";
+            return "No values found";
         }
         
         int low = 0;
@@ -37,7 +37,7 @@ public:
         if (high >= 0) {
             return m[key][high].first;
         }
-        return "";
+        return "To small timestamp";
     }
 private:
     unordered_map<string, vector<pair<string, int>>> m;
@@ -58,6 +58,9 @@ int main() {
     cout << timeMap->get("apple", 2) << endl;   // Output should be "juice"
     cout << timeMap->get("apple", 10) << endl;  // Output should be "cider"
     cout << timeMap->get("apple", 20) << endl;  // Output should be "pie"
+    cout << timeMap->get("apple", 1) << endl;  // Outputs: "", because there are no timestamps <= 1 for "apple".
+    cout << timeMap->get("banana", 5) << endl;  // Outputs: "", because "banana" was never set.
+
 
     // Clean up
     delete timeMap;

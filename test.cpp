@@ -1,41 +1,38 @@
+// Online C++ compiler to run C++ program online
 #include <iostream>
 #include <vector>
-
+#include <cmath>
+#include <algorithm>
 using namespace std;
-
+    
 class Solution {
 public:
-    void solve(vector <string> ans, string output, int open, int close){
-        if(open == close == 0){
-            ans.push_back(output);
-            return;
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int low = 1;
+        int high = *max_element(piles.begin(), piles.end());
+        int result = high;
+        while (low <= high){
+            int mid = low + (high - low)/2;
+            int hour = 0;
+            for(int i:piles){
+                hour += ceil(piles[i]/mid);
+            }
+            if (hour <= h){
+                result = min(result, mid);
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
         }
-        if(open > 0){
-            output.push_back('(');
-            solve(ans, output, open - 1, close);
-            output.pop_back();
-        }
-        if(close > open){
-            output.push_back(')');
-            solve(ans, output, open, close - 1);
-            output.pop_back();
-        }
-    }
-
-    vector<string> generateParenthesis(int n) {
-    vector <string> ans = {};
-    string output = "";
-    solve(ans, output, n, n);
-    return ans;
+        return result;
     }
 };
 
-int main(){
+int main() {
     Solution solution;
-    int n  = 3;
-    vector<string> result = solution.generateParenthesis(n);
-    for (auto n: result){
-        cout << n;
-    }
+    vector<int> piles = {3,6,7,11};
+    int h = 8;
+    int result = solution.minEatingSpeed(piles, h);
+    cout << result;
     return 0;
 }

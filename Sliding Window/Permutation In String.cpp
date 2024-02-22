@@ -33,7 +33,7 @@ public:
         vector<int> count(26,0);
         for(int i = 0; i < len1; i++){
             count[s1[i] - 'a']++;
-            count[s1[i] - 'a']--;
+            count[s2[i] - 'a']--;
         }
         if(isPermutation(count)){
             return true;

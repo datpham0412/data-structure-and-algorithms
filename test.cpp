@@ -3,36 +3,70 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <unordered_set>
+#include <unordered_map>
+#include <climits>
+
 using namespace std;
     
 class Solution {
 public:
-    int minEatingSpeed(vector<int>& piles, int h) {
-        int low = 1;
-        int high = *max_element(piles.begin(), piles.end());
-        int result = high;
-        while (low <= high){
-            int mid = low + (high - low)/2;
-            int hour = 0;
-            for(int i:piles){
-                hour += ceil(piles[i]/mid);
+    string minWindow(string s, string t) {
+        // count of char in t
+        unordered_map<char, int> m;
+        for (int i = 0; i < t.size(); i++) {
+            m[t[i]]++;
+        }
+        
+        int i = 0;
+        int j = 0;
+        
+        // # of chars in t that must be in s
+        int counter = t.size();
+        
+        int minStart = 0;
+        int minLength = INT_MAX;
+        
+        while (j < s.size()) {
+            // if char in s exists in t, decrease
+            if (m[s[j]] > 0) {
+                counter--;
             }
-            if (hour <= h){
-                result = min(result, mid);
-                high = mid - 1;
-            }else{
-                low = mid + 1;
+            // if char doesn't exist in t, will be -'ve
+            m[s[j]]--;
+            // move j to find valid window
+            j++;
+            
+            // when window found, move i to find smaller
+            while (counter == 0) {
+                if (j - i < minLength) {
+                    minStart = i;
+                    minLength = j - i;
+                }
+                
+                m[s[i]]++;
+                // when char exists in t, increase
+                if (m[s[i]] > 0) {
+                    counter++;
+                }
+                i++;
             }
         }
-        return result;
+        
+        if (minLength != INT_MAX) {
+            return s.substr(minStart, minLength);
+        }
+        return "";
     }
 };
-
 int main() {
+    string s = "ADOBECODEBANC";
+    string t = "ABC";
+
     Solution solution;
-    vector<int> piles = {3,6,7,11};
-    int h = 8;
-    int result = solution.minEatingSpeed(piles, h);
-    cout << result;
+    string result = solution.minWindow(s, t);
+
+    cout << "Minimum window substring: " << result << endl;
+
     return 0;
 }

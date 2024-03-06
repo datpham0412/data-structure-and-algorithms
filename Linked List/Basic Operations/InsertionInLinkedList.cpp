@@ -6,8 +6,16 @@ struct Node {
     Node* next; // Pointer to the next node in the list
     // Default constructor
     Node() : data(data), next(nullptr){} // Initializes data to 0 and next to nullptr
+    Node (){
+        this -> data = data;
+        this -> next = nullptr;
+    }
     // Constructor initializes the node with data and sets next to nullptr
     Node(int data) : data(data), next(nullptr) {}
+    // Node (int data){
+    //     this->data = data;
+    //     this->next = nullptr;
+    // }
 };
 
 // Function to add a node to the end of the list
@@ -97,7 +105,7 @@ int main() {
 
     // Check if the third node exists and then insert after it
     if (thirdNode != nullptr) {
-        insertAfter(thirdNode, 12); // Inserts 50 after the third node
+        insertAfter(thirdNode, 12); // Inserts 12 after the third node
     }
 
     // Print the created linked list

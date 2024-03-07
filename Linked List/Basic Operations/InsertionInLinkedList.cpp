@@ -18,6 +18,9 @@ struct Node {
     // }
 };
 
+// Append 
+// Time complexity: O(n)
+// Space complexity: O(1)
 // Function to add a node to the end of the list
 void append(Node** head_ref, int new_data) {
     // Allocate new node with given data
@@ -40,6 +43,10 @@ void append(Node** head_ref, int new_data) {
     last->next = new_node;
 }
 
+
+// Insert at the beginning
+// Time Complexity: O(1)
+// Space complexity: O(1)
 // Function to insert a new node at the beginning of the list
 void push(Node** head_ref, int new_data) {
     //1.  Allocate the new node and set its data
@@ -54,6 +61,10 @@ void push(Node** head_ref, int new_data) {
     *head_ref = new_node;
 }
 
+
+//Insert after given node:
+// Time complexity: O(1)
+// Space complexity: O(1)
 // Function to insert a new node after the given prev_node
 void insertAfter(Node* prev_node, int new_data) {
     // 1. Check if the given prev_node is NULL

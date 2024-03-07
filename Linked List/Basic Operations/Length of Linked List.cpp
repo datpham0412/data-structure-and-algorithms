@@ -24,13 +24,21 @@ public:
 	}
 };
 
-int countLength(Node *head){
+int countLengthIterative(Node *head){
 	int count = 0;
 	while (head != nullptr){
 		count++;
 		head = head -> next;
 	}
 	return count;
+}
+
+int countLengthRecursive(Node *head){
+    if (head == nullptr){
+        return 0;
+    }else{
+        return 1 + countLengthIterative(head->next);
+    }
 }
 
 void printList(Node *head){
@@ -48,6 +56,6 @@ int main(){
 	head -> next -> next -> next = new Node(4);
 
 	printList(head);
-	cout << endl << "The length of the linked list is: "<< countLength(head);
+	cout << endl << "The length of the linked list is: "<< countLengthRecursive(head);
 	return 0;
 }

@@ -1,15 +1,19 @@
+// Time complexity: O(n)
+// Space complexity: O(1)
+
+
 #include <iostream>
 
 // Define a node in the linked list
 class ListNode {
 public:
-    int value; // Data carried by the node
+    int data; // Data carried by the node
     ListNode* next; // Pointer to the next node in the list
     
     // Constructor initializes the node with data and sets next to nullptr
-    // ListNode(int value) : value(value), next(nullptr) {}
-    ListNode (int value){
-        this-> value = value;
+    // ListNode(int data) : data(data), next(nullptr) {}
+    ListNode (int data){
+        this-> data = data;
         this -> next = nullptr;
     }
 
@@ -26,13 +30,13 @@ public:
 };
 
 // Function to search for an element in the linked list
-bool search(ListNode* head, int key) {
+bool searchIterative(ListNode* head, int key) {
     ListNode* current = head; // Start from the head of the list
 
     // Iterate over the list
     while (current != nullptr) {
         // If the current node contains the key, return true
-        if (current->value == key) {
+        if (current->data == key) {
             return true;
         }
         // Move to the next node
@@ -42,12 +46,21 @@ bool search(ListNode* head, int key) {
     // If key is not found, return false
     return false;
 }
+bool searchRecursive(ListNode* head, int key) {
+    if (head == nullptr){
+        return false;
+    }
+    if (head -> data == key){
+        return true;
+    }
+    return searchRecursive(head->next, key);
+}
 
 // Function to print the linked list
 void printList(ListNode* head) {
     // Iterate over the list and print each node's data
     while (head != nullptr) {
-        std::cout << head->value << " -> ";
+        std::cout << head->data << " -> ";
         head = head->next;
     }
     std::cout << "NULL" << std::endl;
@@ -69,7 +82,7 @@ int main() {
     // Search for elements in the linked list
     int keys[] = {3, 6};
     for (int key : keys) {
-        if (search(head, key)) {
+        if (searchRecursive(head, key)) {
             std::cout << key << " found in the linked list." << std::endl;
         } else {
             std::cout << key << " not found in the linked list." << std::endl;

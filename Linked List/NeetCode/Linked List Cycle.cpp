@@ -14,6 +14,7 @@ class Node{
 class Solution{
     public:
     bool linkedListCycle(Node* head){
+        if(head == nullptr){return false;}
         Node* slow = head;
         Node* fast = head;
 

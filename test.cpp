@@ -1,65 +1,67 @@
 #include <iostream>
+
 using namespace std;
 
-class Node{
-    public:
+class ListNode
+{
+public:
     int data;
-    Node* next;
-    Node () : data(0), next(nullptr){}
-    Node (int data) : data(data), next(nullptr){}
-    Node (int data, Node* next) : data(data), next(next){}
-
+    ListNode *next;
+    ListNode *prev;
+    ListNode() : data(data), next(nullptr), prev(nullptr) {}
+    ListNode(int data) : data(data), next(nullptr), prev(nullptr) {}
 };
 
-class Solution{
-    public:
-    bool linkedListCycle(Node* head){
-        Node* slow = head;
-        Node* fast = head;
+void push(ListNode **head_ref, int new_data)
+{
+    ListNode *new_node = new ListNode(new_data);
+    new_node->next = (*head_ref);
 
-        while(fast -> next != nullptr && fast->next->next != nullptr){
-            slow = slow -> next;
-            fast = fast-> next -> next;
-            if (slow == fast){
-                return true;
-            }
-        }
-        return false;
+    if ((*head_ref) != nullptr)
+    {
+        (*head_ref)->prev = new_node;
     }
+    (*head_ref) = new_node;
+}
 
-};
+ListNode *getLastNode(ListNode *head)
+{
+    ListNode *last = head;
+    while (last != nullptr && last->next != nullptr)
+    {
+        last = last->next;
+    }
+    return last;
+}
 
-void printList(Node* head){
-    while(head != nullptr){
-        cout << head -> data << " -> ";
-        head = head -> next;
+void printListForward(ListNode *head)
+{
+    while (head != nullptr)
+    {
+        cout << head->data << " -> ";
+        head = head->next;
+    }
+    cout << endl;
+}
+void printListBackward(ListNode *head)
+{
+    ListNode *last = getLastNode(head);
+    while (last != nullptr)
+    {
+        cout << last->data << " -> ";
+        last = last->prev;
     }
 }
 
-
-int main(){
-    Node* node1 = new Node(1);
-    Node* node2 = new Node(2);
-    Node* node3 = new Node(3);
-    Node* node4 = new Node(4);
-
-    node1 -> next = node2;
-    node2 -> next = node3;
-    node3 -> next = node4;
-    node4 -> next = node2;
-
-    Solution* solution;
-    cout << "Test Case 1: " << (solution -> linkedListCycle(node1) ? "true" : "false") << endl; 
-
-
-    Node* node5 = new Node(5);
-    Node* node6 = new Node(6);
-    Node* node7 = new Node(7);
-
-    node5 -> next = node6;
-    node6 -> next = node7;
-    node7 -> next = nullptr;
-
-    cout << "Test Case 2: " << (solution -> linkedListCycle(node5) ? "true" : "false");
+int main()
+{
+    ListNode *head = nullptr;
+    push(&head, 5);
+    push(&head, 4);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 1);
+    printListForward(head);
+    printListBackward(head);
     return 0;
 }

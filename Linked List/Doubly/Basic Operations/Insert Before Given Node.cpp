@@ -11,24 +11,6 @@ public:
     ListNode() : data(0), next(nullptr), prev(nullptr) {}
     ListNode(int data) : data(data), next(nullptr), prev(nullptr) {}
 };
-// Time : O(1)
-// Space: O(1)
-void insertAfter(ListNode *prev_node, int new_data)
-{
-    if (prev_node == NULL)
-    {
-        cout << "the given previous node cannot be NULL";
-        return;
-    }
-    ListNode *new_node = new ListNode(new_data);
-    new_node->next = prev_node->next;
-    prev_node->next = new_node;
-    new_node->prev = prev_node;
-    if (new_node->next != nullptr)
-    {
-        new_node->next->prev = new_node;
-    }
-}
 
 void push(ListNode **head_ref, int new_data)
 {
@@ -41,6 +23,28 @@ void push(ListNode **head_ref, int new_data)
         (*head_ref)->prev = new_node;
     }
     (*head_ref) = new_node;
+}
+
+void insertBefore(ListNode **head_ref, ListNode *next_node, int new_data)
+{
+    if (next_node == nullptr)
+    {
+        cout << "The given node can not be null";
+        return;
+    }
+    ListNode *new_node = new ListNode(new_data);
+    new_node->prev = next_node->prev;
+    next_node->prev = new_node;
+    new_node->next = next_node;
+
+    if (new_node->prev != nullptr)
+    {
+        new_node->prev->next = new_node;
+    }
+    else
+    {
+        (*head_ref) = new_node; // if the node is at the beginning of the
+    }
 }
 
 ListNode *getLastNode(ListNode *head)
@@ -61,29 +65,29 @@ void printListForward(ListNode *head)
         cout << head->data << " -> ";
         head = head->next;
     }
+    cout << "NULL";
 }
 void printListBackward(ListNode *head)
 {
     ListNode *last = getLastNode(head);
-    cout << "-> NULL\nTraversal in backward direction: \nNULL -> ";
+    cout << "\nTraversal in backward direction: \nNULL -> ";
     while (last != nullptr)
     {
         cout << last->data << " -> ";
         last = last->prev;
     }
-    cout << "-> NULL";
+    cout << " NULL";
 }
 
 int main()
 {
     ListNode *head = nullptr;
-    ListNode *node1 = new ListNode(100);
     push(&head, 5);
     push(&head, 4);
     push(&head, 3);
     push(&head, 2);
     push(&head, 1);
-    insertAfter(head->next, 100);
+    insertBefore(&head, head, 100);
     printListForward(head);
     printListBackward(head);
 

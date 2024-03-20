@@ -47,13 +47,13 @@ void printListForward(ListNode *head)
 void printListBackward(ListNode *head)
 {
     ListNode *last = getLastNode(head);
-    cout << "-> NULL\nTraversal in backward direction: \nNULL -> ";
+    cout << "NULL\nTraversal in backward direction: \nNULL -> ";
     while (last != nullptr)
     {
         cout << last->data << " -> ";
         last = last->prev;
     }
-    cout << "-> NULL";
+    cout << "NULL";
 }
 
 int main()

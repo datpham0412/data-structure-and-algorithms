@@ -1,14 +1,16 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
-struct ListNode
+class ListNode
 {
+public:
     int val;
     ListNode *next;
     ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
+    ListNode(int value) : val(value), next(nullptr) {}
+    ListNode(int value, ListNode *next) : val(value), next(next) {}
 };
 
 class Solution
@@ -19,69 +21,64 @@ public:
         int n = lists.size();
         if (n == 0)
         {
-            return NULL;
+            return nullptr;
         }
-
         while (n > 1)
         {
             for (int i = 0; i < n / 2; i++)
             {
-                lists[i] = mergeTwoLists(lists[i], lists[n - i - 1]);
+                lists[i] = mergeTwoLists(lists[i], lists[n - 1 - i]);
             }
             n = (n + 1) / 2;
         }
-
         return lists.front();
     }
 
 private:
-    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
+    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
     {
-        ListNode dummy;
-        ListNode *current = &dummy;
-        while (l1 != nullptr && l2 != nullptr)
+        ListNode *dummy = new ListNode();
+        ListNode *current = dummy;
+
+        while (list1 != nullptr && list2 != nullptr)
         {
-            if (l1->val <= l2->val)
+            if (list1->val <= list2->val)
             {
-                current->next = l1;
-                l1 = l1->next;
+                current->next = list1;
+                list1 = list1->next;
             }
             else
             {
-                current->next = l2;
-                l2 = l2->next;
+                current->next = list2;
+                list2 = list2->next;
             }
             current = current->next;
         }
-        current->next = l1 != nullptr ? l1 : l2;
-        return dummy.next;
+        current->next = list1 != nullptr ? list1 : list2;
+        return dummy->next;
     }
 };
 
-// Helper function to create a linked list from a vector of values
 ListNode *createList(const vector<int> &values)
 {
     ListNode dummy;
     ListNode *current = &dummy;
-    for (int val : values)
+
+    for (int i = 0; i < values.size(); i++)
     {
-        current->next = new ListNode(val);
+        current->next = new ListNode(values[i]);
         current = current->next;
     }
     return dummy.next;
 }
 
-// Helper function to print a linked list
 void printList(ListNode *head)
 {
     while (head != nullptr)
     {
-        cout << head->val;
-        if (head->next != nullptr)
-            cout << "->";
+        cout << head->val << " -> ";
         head = head->next;
     }
-    cout << endl;
 }
 
 int main()
@@ -90,12 +87,8 @@ int main()
         createList({1, 4, 5}),
         createList({1, 3, 4}),
         createList({2, 6})};
-
-    Solution solution;
-    ListNode *result = solution.mergeKLists(lists);
-
-    cout << "Merged list: ";
+    Solution *solution = new Solution();
+    ListNode *result = solution->mergeKLists(lists);
     printList(result);
-
     return 0;
 }

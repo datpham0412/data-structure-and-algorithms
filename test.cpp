@@ -1,94 +1,66 @@
 #include <iostream>
-#include <vector>
 
-using namespace std;
-
-class ListNode
+class Node
 {
 public:
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int value) : val(value), next(nullptr) {}
-    ListNode(int value, ListNode *next) : val(value), next(next) {}
+    int data;
+    Node *next;
+    Node() : data(0), next(nullptr) {}
+    Node(int data) : data(data), next(nullptr) {}
+    Node(int data, Node *next) : data(data), next(next) {}
 };
 
 class Solution
 {
 public:
-    ListNode *mergeKLists(vector<ListNode *> &lists)
+    Node *reverseList(Node *head)
     {
-        int n = lists.size();
-        if (n == 0)
+        Node *current = head;
+        Node *prev_node = nullptr;
+        while (current != nullptr)
         {
-            return nullptr;
+            Node *temp = current->next;
+            current->next = prev_node;
+            prev_node = current;
+            current = temp;
         }
-        while (n > 1)
-        {
-            for (int i = 0; i < n / 2; i++)
-            {
-                lists[i] = mergeTwoLists(lists[i], lists[n - 1 - i]);
-            }
-            n = (n + 1) / 2;
-        }
-        return lists.front();
-    }
-
-private:
-    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
-    {
-        ListNode *dummy = new ListNode();
-        ListNode *current = dummy;
-
-        while (list1 != nullptr && list2 != nullptr)
-        {
-            if (list1->val <= list2->val)
-            {
-                current->next = list1;
-                list1 = list1->next;
-            }
-            else
-            {
-                current->next = list2;
-                list2 = list2->next;
-            }
-            current = current->next;
-        }
-        current->next = list1 != nullptr ? list1 : list2;
-        return dummy->next;
+        return head;
     }
 };
 
-ListNode *createList(const vector<int> &values)
-{
-    ListNode dummy;
-    ListNode *current = &dummy;
-
-    for (int i = 0; i < values.size(); i++)
-    {
-        current->next = new ListNode(values[i]);
-        current = current->next;
-    }
-    return dummy.next;
-}
-
-void printList(ListNode *head)
+void printList(Node *head)
 {
     while (head != nullptr)
     {
-        cout << head->val << " -> ";
+        std::cout << head->data << " -> ";
         head = head->next;
     }
 }
 
 int main()
 {
-    vector<ListNode *> lists = {
-        createList({1, 4, 5}),
-        createList({1, 3, 4}),
-        createList({2, 6})};
+    Node *head = nullptr;
+    head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    std::cout << "Original List: ";
+    printList(head);
+
     Solution *solution = new Solution();
-    ListNode *result = solution->mergeKLists(lists);
-    printList(result);
-    return 0;
+    Node *reversedHead = solution->reverseList(head);
+
+    std::cout << "Reversed List: ";
+    printList(reversedHead);
+
+    while (reversedHead != nullptr)
+    {
+        Node *temp = reversedHead;
+        reversedHead = reversedHead->next;
+        delete temp;
+    }
+
+    delete solution;
 }

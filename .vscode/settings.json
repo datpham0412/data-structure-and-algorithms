@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "ostream": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "ios": "cpp",
+    "xiosbase": "cpp"
   }
 }

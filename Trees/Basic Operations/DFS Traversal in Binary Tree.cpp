@@ -1,3 +1,5 @@
+// Time: O(n)
+// Space: O(h), h: height of a tree
 #include <iostream>
 
 using namespace std;

@@ -1,11 +1,6 @@
-// Insertion in binary tree in level order
-// Time : O(V) where V is the number of nodes
-// Space : O(B) where B is the width of the tree and in the worst case we need to hold all vertices of a level in the queue
-
 #include <iostream>
 #include <queue>
 using namespace std;
-
 class TreeNode
 {
 public:
@@ -17,18 +12,28 @@ public:
     TreeNode(int value, TreeNode *left, TreeNode *right) : val(value), left(left), right(right) {}
 };
 
+int maxDepth(TreeNode *node)
+{
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        int lDepth = maxDepth(node->left);
+        int rDepth = maxDepth(node->right);
+
+        return (lDepth > rDepth) ? (lDepth + 1) : (rDepth + 1);
+    }
+}
+
 TreeNode *insertNode(TreeNode *node, int value)
 {
-    // If the root is empty
     if (node == nullptr)
     {
         node = new TreeNode(value);
         return node;
     }
-    // The idea is to do an iterative level order traversal of the given tree using queue.
-    // If we find a node whose left child is empty, we make a new key as the left child of the node.
-    // Else if we find a node whose right child is empty, we make the new key as the right child.
-    // We keep traversing the tree until we find a node whose either left or right child is empty.
     queue<TreeNode *> q;
     q.push(node);
     while (!q.empty())
@@ -69,20 +74,22 @@ void inorderTraversal(TreeNode *node)
 
 int main()
 {
-    TreeNode *root = new TreeNode(10);
-    root->left = new TreeNode(11);
-    root->right = new TreeNode(9);
-    root->left->left = new TreeNode(7);
-    root->right->left = new TreeNode(15);
-    root->right->right = new TreeNode(8);
-
-    cout << "Inorder traversal before insertion: ";
+    TreeNode *root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+    root->left->right->right = new TreeNode(6);
+    cout << "Tree before insert: ";
     inorderTraversal(root);
-    cout << endl;
+    insertNode(root, 7);
+    insertNode(root, 8);
+    insertNode(root, 9);
+    insertNode(root, 10);
 
-    insertNode(root, 12);
-    cout << "Inorder traversal after insertion: ";
+    cout << "Tree after insert: ";
     inorderTraversal(root);
-    cout << endl;
+    cout << "Max depth of tree is " << maxDepth(root);
+    delete root;
     return 0;
 }

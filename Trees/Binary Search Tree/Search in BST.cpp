@@ -1,3 +1,6 @@
+// Time complexity: O(h), where h is the height of the BST.
+// Auxiliary Space: O(h), where h is the height of the BST.
+// This is because the maximum amount of space needed to store the recursion stack would be h.
 #include <iostream>
 
 using namespace std;

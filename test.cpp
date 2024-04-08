@@ -1,102 +1,81 @@
 #include <iostream>
+
 using namespace std;
 
-const char PLAYER_X = 'X';
-const char PLAYER_O = 'O';
-const char EMPTY = ' ';
-
-void initializeBoard(char board[3][3])
+class BST
 {
-    for (int i = 0; i < 3; i++)
+    struct Node
     {
-        for (int j = 0; j < 3; j++)
+        int data;
+        Node *left;
+        Node *right;
+
+        Node(int value) : data(value), left(NULL), right(NULL) {}
+    };
+
+    Node *root;
+    Node *insert(Node *node, int value)
+    {
+        // Base case: If the tree is empty, return a new node
+        if (node == NULL)
         {
-            board[i][j] = EMPTY;
+            return new Node(value);
+        }
+
+        // Otherwise, recur down the tree
+        if (value < node->data)
+        {
+            node->left = insert(node->left, value);
+        }
+        else if (value > node->data)
+        {
+            node->right = insert(node->right, value);
+        }
+
+        // Return the (unchanged) node pointer
+        return node;
+    }
+
+public:
+    BST() : root(NULL) {}
+
+    void insert(int value)
+    {
+        root = insert(root, value);
+    }
+
+    // Function to do inorder traversal of BST
+    void inorderTraversal(Node *node)
+    {
+        if (node != NULL)
+        {
+            inorderTraversal(node->left);
+            cout << node->data << " ";
+            inorderTraversal(node->right);
         }
     }
-}
 
-void printBoard(char board[3][3])
-{
-    cout << "  0 1 2\n";
-    for (int i = 0; i < 3; i++)
+    void display()
     {
-        cout << i << " ";
-        for (int j = 0; j < 3; j++)
-        {
-            cout << board[i][j];
-            if (j < 2)
-                cout << "|";
-        }
-        cout << "\n";
-        if (i < 2)
-            cout << "  -+-+-\n";
+        inorderTraversal(root);
+        cout << endl;
     }
-}
-
-bool isWin(char player, char board[3][3])
-{
-    // Check rows, columns, and diagonals
-    for (int i = 0; i < 3; i++)
-        if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
-            (board[0][i] == player && board[1][i] == player && board[2][i] == player))
-            return true;
-
-    if ((board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
-        (board[0][2] == player && board[1][1] == player && board[2][0] == player))
-        return true;
-
-    return false;
-}
-
-bool isDraw(char board[3][3])
-{
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            if (board[i][j] == EMPTY)
-                return false;
-    return true;
-}
-
-void playerTurn(char player, char board[3][3])
-{
-    int x, y;
-    do
-    {
-        cout << "Player " << player << ", enter your move (row and column): ";
-        cin >> x >> y;
-    } while (x < 0 || x > 2 || y < 0 || y > 2 || board[x][y] != EMPTY);
-
-    board[x][y] = player;
-}
+};
 
 int main()
 {
-    char board[3][3];
-    char currentPlayer = PLAYER_X;
+    BST bst;
 
-    initializeBoard(board);
+    bst.insert(50);
+    bst.insert(30);
+    bst.insert(20);
+    bst.insert(40);
+    bst.insert(70);
+    bst.insert(60);
+    bst.insert(80);
 
-    while (true)
-    {
-        printBoard(board);
-        playerTurn(currentPlayer, board);
-
-        if (isWin(currentPlayer, board))
-        {
-            printBoard(board);
-            cout << "Player " << currentPlayer << " wins!" << endl;
-            break;
-        }
-        else if (isDraw(board))
-        {
-            printBoard(board);
-            cout << "It's a draw!" << endl;
-            break;
-        }
-
-        currentPlayer = (currentPlayer == PLAYER_X) ? PLAYER_O : PLAYER_X;
-    }
+    cout << "Inorder traversal of the given tree: \n";
+    bst.display();
 
     return 0;
 }

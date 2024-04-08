@@ -1,95 +1,102 @@
 #include <iostream>
-#include <queue>
 using namespace std;
-class TreeNode
-{
-public:
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int value) : val(value), left(nullptr), right(nullptr) {}
-    TreeNode(int value, TreeNode *left, TreeNode *right) : val(value), left(left), right(right) {}
-};
 
-int maxDepth(TreeNode *node)
-{
-    if (node == nullptr)
-    {
-        return 0;
-    }
-    else
-    {
-        int lDepth = maxDepth(node->left);
-        int rDepth = maxDepth(node->right);
+const char PLAYER_X = 'X';
+const char PLAYER_O = 'O';
+const char EMPTY = ' ';
 
-        return (lDepth > rDepth) ? (lDepth + 1) : (rDepth + 1);
-    }
-}
-
-TreeNode *insertNode(TreeNode *node, int value)
+void initializeBoard(char board[3][3])
 {
-    if (node == nullptr)
+    for (int i = 0; i < 3; i++)
     {
-        node = new TreeNode(value);
-        return node;
-    }
-    queue<TreeNode *> q;
-    q.push(node);
-    while (!q.empty())
-    {
-        TreeNode *current = q.front();
-        q.pop();
-        if (current->left != nullptr)
+        for (int j = 0; j < 3; j++)
         {
-            q.push(current->left);
-        }
-        else
-        {
-            current->left = new TreeNode(value);
-            return node;
-        }
-        if (current->right != nullptr)
-        {
-            q.push(current->right);
-        }
-        else
-        {
-            current->right = new TreeNode(value);
-            return node;
+            board[i][j] = EMPTY;
         }
     }
 }
 
-void inorderTraversal(TreeNode *node)
+void printBoard(char board[3][3])
 {
-    if (node == nullptr)
+    cout << "  0 1 2\n";
+    for (int i = 0; i < 3; i++)
     {
-        return;
+        cout << i << " ";
+        for (int j = 0; j < 3; j++)
+        {
+            cout << board[i][j];
+            if (j < 2)
+                cout << "|";
+        }
+        cout << "\n";
+        if (i < 2)
+            cout << "  -+-+-\n";
     }
-    inorderTraversal(node->left);
-    cout << node->val << " ";
-    inorderTraversal(node->right);
+}
+
+bool isWin(char player, char board[3][3])
+{
+    // Check rows, columns, and diagonals
+    for (int i = 0; i < 3; i++)
+        if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+            (board[0][i] == player && board[1][i] == player && board[2][i] == player))
+            return true;
+
+    if ((board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+        (board[0][2] == player && board[1][1] == player && board[2][0] == player))
+        return true;
+
+    return false;
+}
+
+bool isDraw(char board[3][3])
+{
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (board[i][j] == EMPTY)
+                return false;
+    return true;
+}
+
+void playerTurn(char player, char board[3][3])
+{
+    int x, y;
+    do
+    {
+        cout << "Player " << player << ", enter your move (row and column): ";
+        cin >> x >> y;
+    } while (x < 0 || x > 2 || y < 0 || y > 2 || board[x][y] != EMPTY);
+
+    board[x][y] = player;
 }
 
 int main()
 {
-    TreeNode *root = new TreeNode(1);
-    root->left = new TreeNode(2);
-    root->right = new TreeNode(3);
-    root->left->left = new TreeNode(4);
-    root->left->right = new TreeNode(5);
-    root->left->right->right = new TreeNode(6);
-    cout << "Tree before insert: ";
-    inorderTraversal(root);
-    insertNode(root, 7);
-    insertNode(root, 8);
-    insertNode(root, 9);
-    insertNode(root, 10);
+    char board[3][3];
+    char currentPlayer = PLAYER_X;
 
-    cout << "Tree after insert: ";
-    inorderTraversal(root);
-    cout << "Max depth of tree is " << maxDepth(root);
-    delete root;
+    initializeBoard(board);
+
+    while (true)
+    {
+        printBoard(board);
+        playerTurn(currentPlayer, board);
+
+        if (isWin(currentPlayer, board))
+        {
+            printBoard(board);
+            cout << "Player " << currentPlayer << " wins!" << endl;
+            break;
+        }
+        else if (isDraw(board))
+        {
+            printBoard(board);
+            cout << "It's a draw!" << endl;
+            break;
+        }
+
+        currentPlayer = (currentPlayer == PLAYER_X) ? PLAYER_O : PLAYER_X;
+    }
+
     return 0;
 }

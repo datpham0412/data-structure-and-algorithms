@@ -1,49 +1,81 @@
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
-class TreeNode
+// Definition for a binary tree node.
+struct TreeNode
 {
-public:
     int val;
     TreeNode *left;
     TreeNode *right;
     TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int value) : val(value), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
 {
 public:
-    int diameterOfBinaryTree(TreeNode *root)
+    bool isBalanced(TreeNode *root)
     {
-        int result = 0;
-        result = dfs(root, result);
-        return result;
+        int height = 0;
+        return dfs(root, height);
     }
 
 private:
-    int dfs(TreeNode *root, int &result)
+    bool dfs(TreeNode *root, int &height)
     {
-        if (root == nullptr)
+        if (root == NULL)
         {
-            return 0;
+            height = -1;
+            return true;
         }
-        int left = dfs(root->left, result);
-        int right = dfs(root->right, result);
-        result = max(result, left + right);
-        return 1 + max(left, right);
+
+        int left = 0;
+        int right = 0;
+
+        if (!dfs(root->left, left) || !dfs(root->right, right))
+        {
+            return false;
+        }
+        if (abs(left - right) > 1)
+        {
+            return false;
+        }
+
+        height = 1 + max(left, right);
+        return true;
     }
 };
 
-int main(int argc, char **argv)
+int main()
 {
+    // Constructing the test case as a binary tree
     TreeNode *root = new TreeNode(1);
     root->left = new TreeNode(2);
     root->right = new TreeNode(3);
     root->left->left = new TreeNode(4);
     root->left->right = new TreeNode(5);
-    Solution solution = Solution();
-    cout << "The diameter of the binary tree is " << solution.diameterOfBinaryTree(root) << endl;
+
+    Solution solution;
+    bool isBal = solution.isBalanced(root);
+    if (isBal)
+    {
+        cout << "The tree is balanced." << endl;
+    }
+    else
+    {
+        cout << "The tree is not balanced." << endl;
+    }
+
+    // Clean up the allocated nodes
+    delete root->left->left;
+    delete root->left->right;
+    delete root->left;
+    delete root->right;
+    delete root;
+
     return 0;
 }

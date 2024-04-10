@@ -29,7 +29,8 @@ int maxDepth(TreeNode *root)
     int depth = 0;
     while (!q.empty())
     {
-        for (int i = 0; i < q.size(); i++)
+        int size = q.size();
+        for (int i = 0; i < size; i++)
         {
             TreeNode *current = q.front();
             q.pop();

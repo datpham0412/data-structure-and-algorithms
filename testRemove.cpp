@@ -1,22 +1,50 @@
-#include <vector>
-using namespace std;
-class Solution
+Given two strings s and t, determine if they are isomorphic.
+
+                           Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+                           All occurrences of a character must be replaced with another character while preserving the order of characters.No two characters may map to the same character,
+    but a character may map to itself.
+
+    Example 1 :
+
+    Input : s = "egg",
+            t = "add" Output : true Example 2 :
+
+    Input : s = "foo",
+            t = "bar" Output : false Example 3 :
+
+    Input : s = "paper",
+            t = "title" Output : true
+
+                                 Constraints :
+
+                                 1 <= s.length <= 5 * 104 t.length ==
+                    s.length
+                        s and
+                t consist of any valid ascii character.
+
+                /*Given two strings s and t, determine if they are isomorphic.
+
+                Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+                All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+
+                 */
+                class Solution
 {
 public:
-    vector<vector<int>> generate(int numRows)
+    bool isIsomorphic(string s, string t)
     {
-        vector<vector<int>> ret;
-
-        for (int i = 0; i < numRows; i++)
+        unordered_map<char, vector<int>> m1;
+        unordered_map<char, vector<int>> m2;
+        for (int i = 0; i < s.length(); i++)
         {
-            vector<int> row(i + 1, 1);
-            for (int j = 1; j < i; j++)
-            {
-                row[j] = ret[i - 1][j] + ret[i - 1][j - 1];
-            }
-            ret.push_back(row);
-        }
+            m1[s[i]].push_back(i);
+            m2[t[i]].push_back(i);
 
-        return ret;
+            if (m1[s[i]] != m2[t[i]])
+                return false;
+        }
+        return true;
     }
 };

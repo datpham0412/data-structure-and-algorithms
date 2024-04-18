@@ -24,7 +24,7 @@ public:
             return nullptr;
 
         TreeNode *root = new TreeNode(preorder[0]);
-        auto mid = find(inorder.begin(), inorder.end(), preorder[0]) - inorder.begin();
+        int mid = find(inorder.begin(), inorder.end(), preorder[0]) - inorder.begin();
 
         vector<int> leftPreorder(preorder.begin() + 1, preorder.begin() + 1 + mid);
         vector<int> rightPreorder(preorder.begin() + 1 + mid, preorder.end());

@@ -1,72 +1,50 @@
-#include <iostream>
-#include <vector>
-#include <algorithm> // For std::find
+Given two strings s and t, determine if they are isomorphic.
 
-using namespace std;
+                           Two strings s and t are isomorphic if the characters in s can be replaced to get t.
 
-// Definition for a binary tree node.
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
+                           All occurrences of a character must be replaced with another character while preserving the order of characters.No two characters may map to the same character,
+    but a character may map to itself.
 
-class Solution
+    Example 1 :
+
+    Input : s = "egg",
+            t = "add" Output : true Example 2 :
+
+    Input : s = "foo",
+            t = "bar" Output : false Example 3 :
+
+    Input : s = "paper",
+            t = "title" Output : true
+
+                                 Constraints :
+
+                                 1 <= s.length <= 5 * 104 t.length ==
+                    s.length
+                        s and
+                t consist of any valid ascii character.
+
+                /*Given two strings s and t, determine if they are isomorphic.
+
+                Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+                All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+
+                 */
+                class Solution
 {
 public:
-    TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
+    bool isIsomorphic(string s, string t)
     {
-        if (preorder.empty() || inorder.empty())
-            return nullptr;
+        unordered_map<char, vector<int>> m1;
+        unordered_map<char, vector<int>> m2;
+        for (int i = 0; i < s.length(); i++)
+        {
+            m1[s[i]].push_back(i);
+            m2[t[i]].push_back(i);
 
-        TreeNode *root = new TreeNode(preorder[0]);
-        auto mid = find(inorder.begin(), inorder.end(), preorder[0]) - inorder.begin();
-
-        vector<int> leftPreorder(preorder.begin() + 1, preorder.begin() + 1 + mid);
-        vector<int> rightPreorder(preorder.begin() + 1 + mid, preorder.end());
-
-        vector<int> leftInorder(inorder.begin(), inorder.begin() + mid);
-        vector<int> rightInorder(inorder.begin() + mid + 1, inorder.end());
-
-        root->left = buildTree(leftPreorder, leftInorder);
-        root->right = buildTree(rightPreorder, rightInorder);
-
-        return root;
+            if (m1[s[i]] != m2[t[i]])
+                return false;
+        }
+        return true;
     }
 };
-
-void printInorder(TreeNode *node)
-{
-    if (node == nullptr)
-        return;
-    printInorder(node->left);
-    cout << node->val << " ";
-    printInorder(node->right);
-}
-
-int main()
-{
-    vector<int> preorder = {3, 9, 20, 15, 7};
-    vector<int> inorder = {9, 3, 15, 20, 7};
-
-    Solution solution;
-    TreeNode *root = solution.buildTree(preorder, inorder);
-
-    cout << "Inorder traversal of constructed tree: ";
-    printInorder(root); // This should print: 9 3 15 20 7
-    cout << endl;
-
-    // Cleanup - Manual deallocation for demonstration purposes
-    // In a real application, consider using smart pointers or container classes for automatic memory management
-    delete root->left;
-    delete root->right->left;
-    delete root->right->right;
-    delete root->right;
-    delete root;
-
-    return 0;
-}

@@ -1,5 +1,7 @@
 // Time: O(n)
 // Space: O(1)
+// integer: 4 bytes = 32 bits
+// total bits: 32 * 26 (bits)
 
 #include <iostream>
 #include <vector>

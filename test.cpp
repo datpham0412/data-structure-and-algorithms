@@ -1,45 +1,15 @@
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class Solution
+bool wordPattern(string pattern, string str)
 {
-public:
-    int arithmeticTriplets(vector<int> &nums, int diff)
+    map<char, int> p2i;
+    map<string, int> w2i;
+    istringstream in(str);
+    int i = 0;
+    int n = pattern.size();
+    for (string word; in >> word; ++i)
     {
-        int counter = 0;
-        int i = 0;
-        int j = nums.size() - 1;
-        while (i <= j)
-        {
-            if (nums[j] - nums[i] == (2 * diff))
-            {
-                counter++;
-            }
-            i++;
-        }
-        int i = 0;
-        int j = nums.size() - 1;
-        while (i <= j)
-        {
-            if (nums[j] - nums[i] == (2 * diff))
-            {
-                counter++;
-            }
-            j--;
-        }
-
-        return counter;
+        if (i == n || p2i[pattern[i]] != w2i[word])
+            return false;
+        p2i[pattern[i]] = w2i[word] = i + 1;
     }
-};
-
-int main()
-{
-    Solution solution;
-    vector<int> nums = {0, 1, 4, 6, 7, 10};
-    int diff = 3;
-    int result = solution.arithmeticTriplets(nums, diff);
-    cout << result << endl;
-
-    return 0;
+    return i == n;
 }

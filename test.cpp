@@ -1,15 +1,32 @@
-bool wordPattern(string pattern, string str)
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Solution
 {
-    map<char, int> p2i;
-    map<string, int> w2i;
-    istringstream in(str);
-    int i = 0;
-    int n = pattern.size();
-    for (string word; in >> word; ++i)
+public:
+    int arraySign(vector<int> &nums)
     {
-        if (i == n || p2i[pattern[i]] != w2i[word])
-            return false;
-        p2i[pattern[i]] = w2i[word] = i + 1;
+        int product = 1;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            product *= nums[i];
+        }
+        if (product > 0)
+            return 1;
+        else if (product < 0)
+            return -1;
+        else
+            return 0;
     }
-    return i == n;
+};
+
+int main()
+{
+    Solution solution;
+    vector<int> nums = {0, 2, 3, 4, 5};
+    int result = solution.arraySign(nums);
+    cout << result;
+    return 0;
 }
